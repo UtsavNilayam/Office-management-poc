@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9; /* Light gray background for the body */
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            background-image: url('https://t3.ftcdn.net/jpg/06/40/76/40/240_F_640764083_0w8bPlehLFOwAYwhKyIKUH5V1XFZquVj.jpg'); /* Background image for the container */
+            background-size: cover; /* Make the background image cover the container */
+            background-position: center;
+            background-repeat: no-repeat; /* Avoid repeating the background image */
+        }
+
+        /* Gold and White Frame around the image */
+        .image-frame {
+            width: 180px; /* Reduced size for the image */
+            height: 180px; /* Reduced size for the image */
+            border: 10px solid #d4af37; /* Gold border */
+            border-radius: 50%; /* Make the frame circular */
+            margin: 0 auto 20px; /* Center the image with margin below */
+            padding: 10px;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-frame img {
+            width: 100%; /* Make image fill the frame */
+            height: 100%; /* Make image fill the frame */
+            object-fit: cover; /* Ensure image doesn't stretch */
+            border-radius: 50%; /* Make the image circular */
+        }
+
+        /* Text for the message */
+        .message {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* Button styles */
+        .button {
+            background-color: #000000; /* Dark black color */
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .button:hover {
+            background-color: #333333; /* Darker black for hover effect */
+        }
+
+        /* Styling for the balloon and cake images beside the text */
+        .celebration-icons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .celebration-icons img {
+            width: 50px; /* Set a fixed size for the icons */
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Gold and White Frame with Image -->
+        <div class="image-frame">
+            <img src="https://t4.ftcdn.net/jpg/06/58/89/03/360_F_658890324_90cQhWiw1FsmeC8UVDuQrzqEjQb5WnnN.jpg" alt="Birthday Photo">
+        </div>
+        
+        <h1>
+            🎉 Happy Birthday, {{ user.name }}! 🎂
+        </h1>
+
+        <p class="message">We hope your day is filled with joy, love, and laughter!</p>
+        <p class="message">Here's to another amazing year ahead!</p>
+
+        <p>Best wishes,</p>
+        <p><strong>DGLiger Consulting Pvt Ltd.</strong></p>
+
+        <!-- Optional button to encourage interaction -->
+        <a href="#" class="button">Celebrate with Us!</a>
+
+        <div class="footer">
+            <p>This is an automated email. Please do not reply.</p>
+        </div>
+    </div>
+</body>
+</html>

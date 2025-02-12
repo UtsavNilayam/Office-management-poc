@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Issues</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .pointer {
+            cursor: pointer;
+        }
+        body {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Reduced size for navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 0.5rem 1rem !important; /* Reduced padding with !important */
+            font-size: 0.9rem !important; /* Reduced font size with !important */
+            background-color: #343a40; /* Optional background color */
+        }
+        
+        /* Reduce navbar brand padding */
+        .navbar-brand {
+            padding: 0.5rem 0 !important;
+            font-size: 1.2rem !important; /* Optional smaller font size */
+        }
+    
+        .navbar-nav {
+            padding: 0 !important; /* Remove default padding from navbar items */
+        }
+    
+        .navbar-nav .nav-link {
+            padding: 0.5rem 1rem !important; /* Reduced padding for links */
+            font-size: 0.85rem !important; /* Smaller font size for links */
+        }
+    
+        .sidebar {
+            margin-top:25px;
+            width: 20%;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .main-content {
+            width: 60%;
+            overflow-y: auto;
+            padding: 20px;
+            height: 100%;
+            margin-top:18px;
+        }
+        .vertical-menu {
+            margin-top:25px;
+            font-size:1rem;
+            width: 20%;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-left: 1px solid #ddd;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        .table-container {
+            max-height: 100%;
+            overflow-y: auto;
+        }
+        .form-inline {
+            margin-bottom: 15px;
+        }
+        .clickable-row {
+            cursor: pointer;
+        }
+        .selected {
+            font-weight: bold; /* Style for selected row */
+        }
+        /* Scrollable history section */
+        #history-section {
+            max-height: 280px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        #message-placeholder {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 1.1rem;
+            color: #555;
+            text-align: center;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1); /* Shadow to match sidebar */
+        }
+        
+        /* Heading style for the message */
+        #message-placeholder h2 {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .navbar {
+            background-color: #0062cc;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-nav {
+            display: flex;
+            justify-content: space-around; /* Make items spaced evenly */
+            width: 100%;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .navbar-nav .nav-item {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .navbar-nav .nav-link {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('filter_image') }}">Gallery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('uploads') }}">Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('todays_birthday') }}">Birthday</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="/aregister">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <h5><b> Filters</b></h5>
+        <form method="GET" action="{{ url_for('get_issue') }}">
+            <label for="status_filter">Status:</label>
+            <select class="form-control mb-2" name="status" id="status_filter">
+                <option value="All" {% if status_filter == 'All' %}selected{% endif %}>All</option>
+                <option value="In Progress" {% if status_filter == 'In Progress' %}selected{% endif %}>In Progress</option>
+                <option value="In Queued" {% if status_filter == 'In Queued' %}selected{% endif %}>In Queued</option>
+                <option value="Rejected" {% if status_filter == 'Rejected' %}selected{% endif %}>Rejected</option>
+                <option value="On Hold" {% if status_filter == 'On Hold' %}selected{% endif %}>On Hold</option>
+                <option value="Completed" {% if status_filter == 'Completed' %}selected{% endif %}>Completed</option>
+            </select>
+
+            <label for="start_date">Start Date:</label>
+            <input type="date" class="form-control mb-2" name="start_date" id="start_date" value="{{ start_date }}">
+
+            <label for="end_date">End Date:</label>
+            <input type="date" class="form-control mb-2" name="end_date" id="end_date" value="{{ end_date }}">
+
+            <button type="submit" class="btn btn-primary btn-block btn-sm" style="margin-top: 15px;">Apply Filter</button>
+
+
+        </form>
+
+        <h5 style="margin-top: 30px;"><b>Reports</b></h5>
+
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center pointer" data-status="All">
+                Total Tickets <span class="badge badge-primary">{{ total_tickets }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center pointer" data-status="In Progress">
+                In Progress <span class="badge badge-warning">{{ in_progress_count }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center pointer" data-status="In Queued">
+                In Queued <span class="badge badge-info">{{ in_queued_count }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center pointer" 
+            data-status="Rejected">
+                Rejected <span class="badge badge-danger">{{ rejected_count }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center pointer" data-status="On Hold">
+                On Hold <span class="badge badge-secondary">{{ on_hold_count }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center pointer" data-status="Completed">
+                Completed <span class="badge badge-success">{{ completed_count }}</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="table-container">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Problem</th>
+                        <th>Status</th>
+                        <th>Remarks</th>
+                        
+                     
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for issue in issues %}
+                    <tr class="clickable-row" data-id="{{ issue.id }}" data-remarks="{{ issue.remarks }}" data-status="{{ issue.status }}">
+                        <td><input type="checkbox" class="single-select"></td>
+                        <td>{{ issue.id }}</td>
+                        <td>{{ issue.email }}</td>
+                        <td>{{ issue.problem }}</td>
+                        <td>{{ issue.status }}</td>
+                        {% set latest_remarks = Issue_History | selectattr('issue_id', 'equalto', issue.id) | sort(attribute='timestamp', reverse=true) | first %}
+                        {% if latest_remarks %}
+                        <td>{{ latest_remarks.remarks }}</td>
+                        {% else %}
+                        <td>No remarks</td>
+                        {% endif %}
+                        
+                      
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+   
+    
+    <!-- Right Sidebar -->
+    <div class="vertical-menu" id="issue-menu">
+        <h5><b>Ticket Pannel</b></h5>
+        <p>Date Raised:</b> <span id="date-raised">N/A</span></p>
+        <p>Due Date:</b> <span id="due-date">N/A</span></p>
+
+        <!-- Static Update Form -->
+        <form id="update-form" method="POST" action="{{ url_for('update_issue_status') }}">
+            <input type="hidden" name="issue_id" id="menu-issue-id">
+            <div class="form-group">
+                <label for="status">Update Status</label>
+                <select name="status" class="form-control" id="status-dropdown">
+                    <option>In Progress</option>
+                    <option>Completed</option>
+                    <option>On Hold</option>
+                    <option>Rejected</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="remarks">Remarks</label>
+                <textarea name="remarks" class="form-control" rows="3" id="remarks-textarea"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Update</button>
+        </form>
+
+        <!-- View History -->
+        <h5 style="margin-top: 15px";><b>History Pannel</b></h5>
+        <a href="#" id="view-history" style="margin-top: 15px; cursor: pointer;"></a>
+
+        <div id="history-section" style="display: none;">
+            <ul id="history-list" class="list-group">
+                <!-- History items will be added dynamically here -->
+            </ul>
+        </div>
+    </div>  
+    <div id="message-placeholder">
+        <h2>Please select an issue to view details</h2>
+        <p>Once you select an issue, its details will appear here along with the history.</p>
+    </div>
+    <script>
+    $(document).ready(function () {
+        // Initially hide the right sidebar and show a message
+        $(".vertical-menu").hide();
+        $("#message-placeholder").text("Please select an issue to view details.");
+        
+        // Handle checkbox clicks to show issue details and ensure only one is checked
+        $(".single-select").on("change", function () {
+            if (this.checked) {
+                // Uncheck all other checkboxes
+                $(".single-select").not(this).prop("checked", false);
+        
+                // Highlight the row and show the sidebar
+                const row = $(this).closest("tr");
+                const issueId = row.data("id");
+                const remarks = row.data("remarks");  // Get remarks from the row
+                const status = row.data("status");
+        
+                // Show the right sidebar
+                $(".vertical-menu").show();
+        
+                // Highlight the selected row
+                $(".clickable-row").removeClass("selected");
+                row.addClass("selected");
+        
+                // Populate the issue details in the sidebar
+                $("#menu-issue-id").val(issueId);
+                $("#remarks-issue-id").val(issueId);
+        
+                // Populate the status correctly
+                $("#status-dropdown").val(status);
+        
+                // Clear the remarks field and set the placeholder text
+                $("#remarks-textarea").val("").attr("placeholder", "Enter remarks");
+        
+                // Fetch issue details (including date_raised and due_date) from the backend
+                fetchIssueDetails(issueId);
+        
+                // Fetch and show the history by default when an issue is selected
+                fetchIssueHistory(issueId);
+        
+                // Clear the message placeholder when an issue is selected
+                $("#message-placeholder").text("");
+            } else {
+                // Hide the sidebar and only show the message when no checkbox is selected
+                $(".vertical-menu").hide();
+                $("#message-placeholder").text("Please select an issue to view details.");
+        
+                $(".clickable-row").removeClass("selected");
+                $(".single-select").prop("checked", false); // Uncheck all checkboxes
+            }
+        });
+        
+        // Fetch issue details from the backend
+        function fetchIssueDetails(issueId) {
+            $.get(`/fetch_issue_details/${issueId}`, function (data) {
+                if (data.success) {
+                    // Get the issue's date_raised and due_date from the returned data
+                    const dateRaised = data.issue.date_raised;
+                    const dueDate = data.issue.due_date;
+    
+                    // Function to format date to DD-MM-YYYY
+                    function formatDate(dateStr) {
+                        const date = new Date(dateStr);  // Parse the date string into a Date object
+                        const day = String(date.getDate()).padStart(2, '0');
+                        const month = String(date.getMonth() + 1).padStart(2, '0');  // Months are 0-indexed
+                        const year = date.getFullYear();
+                        return `${day}-${month}-${year}`;
+                    }
+    
+                    // Update the sidebar with the formatted date information
+                    $("#date-raised").text(formatDate(dateRaised));
+                    $("#due-date").text(formatDate(dueDate));
+                } else {
+                    alert("Failed to fetch issue details. Please try again.");
+                }
+            }).fail(function () {
+                alert("Error fetching issue details. Please check your connection.");
+            });
+        }
+        
+        // Fetch issue history and display it in the sidebar
+        function fetchIssueHistory(issueId) {
+            $.get(`/fetch_issue_history/${issueId}`, function (data) {
+                if (data.success) {
+                    const historyList = $("#history-list");
+                    historyList.empty(); // Clear existing history
+        
+                    // Sort history data by timestamp in descending order
+                    data.history.sort(function(a, b) {
+                        return new Date(b.timestamp) - new Date(a.timestamp); // Newest first
+                    });
+        
+                    // Populate history data
+                    data.history.forEach(item => {
+                        const listItem = `
+                            <li class="list-group-item" style="font-size:0.9rem">
+                                <b>Status:</b> ${item.status}<br>
+                                <b>Remarks:</b> ${item.remarks}<br>
+                                <b>Date:</b> ${item.timestamp}<br>
+                            </li>`;
+                        historyList.append(listItem);
+                    });
+        
+                    // Show the history section
+                    $("#history-section").show();
+                } else {
+                    alert("Failed to fetch history. Please try again.");
+                }
+            }).fail(function () {
+                alert("Error fetching history. Please check your connection.");
+            });
+        }
+        
+        // Prevent sidebar from disappearing on form submission
+        $("#update-form").on("submit", function (e) {
+            e.preventDefault(); // Prevent default form submission
+        
+            const formData = $(this).serialize(); // Collect form data
+        
+            $.post($(this).attr("action"), formData, function (response) {
+                alert("Form submitted successfully!"); // Temporary feedback
+        
+                // Get the updated status and issue ID from the form
+                const newStatus = $("#status-dropdown").val();
+                const issueId = $("#menu-issue-id").val();
+                const newRemarks = $("#remarks-textarea").val(); // Get remarks from the textarea
+        
+                // Update the status column in the table
+                const row = $("tr[data-id='" + issueId + "']");
+                row.find("td:nth-child(5)").text(newStatus); // Update status column
+        
+                // Update remarks column in the table only when the form is submitted
+                row.find("td:nth-child(6)").text(newRemarks); // Update remarks column
+        
+                // Optionally, update history or other logic
+                updateIssueHistory(issueId, newStatus, newRemarks);
+        
+                // Refresh the history panel after form submission
+                fetchIssueHistory(issueId);  // Re-fetch and update history
+            });
+        });
+        
+        // Function to update issue history after status or remarks are updated
+        function updateIssueHistory(issueId, status, remarks) {
+            $.post(`/update_issue_history/${issueId}`, { status: status, remarks: remarks }, function(response) {
+                if (!response.success) {
+                    alert("Failed to update history.");
+                }
+            });
+        }
+        
+        // Prevent sidebar from closing when clicking outside of it
+        $(document).on("click", function (e) {
+            const target = $(e.target);
+        
+            // If the click is outside the sidebar or checkbox rows, prevent closing the sidebar
+            if (!target.closest(".vertical-menu").length && !target.closest(".single-select").length && !target.closest(".clickable-row").length) {
+                // Do not hide the sidebar, but show the message
+                if ($(".single-select:checked").length === 0) {
+                    $(".vertical-menu").hide();  // Hide the sidebar
+                    $("#message-placeholder").text("Please select an issue to view details."); // Show message
+                }
+            }
+        });
+        
+        // Prevent sidebar from closing on form interactions or clicking inside the sidebar
+        $(".vertical-menu").on("click", function (e) {
+            e.stopPropagation(); // Prevent click event from propagating
+        });
+        
+        // Handle stats clicks to filter by status
+        $(".list-group-item.pointer").on("click", function () {  // .pointer instead of .clickable
+            const status = $(this).data("status");
+        
+            // Update status filter dropdown and apply filters
+            $("#status_filter").val(status).change();
+            $("form[method='GET']").submit();
+        });
+    });
+</script>    
+        
+</body>
+</html>

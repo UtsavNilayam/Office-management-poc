@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Stats</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('history') }}">History</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- User Information -->
+    <div class="user-info">
+        <h1>Welcome, {{ user.name }}!</h1>
+    </div>
+
+    <!-- Ticket Stats Section -->
+    <div class="ticket-stats">
+        <h2>Your Ticket Stats</h2>
+        <div class="stats">
+            <p>Total Tickets: {{ total_tickets }}</p>
+            <p>In Progress: {{ in_progress_count }}</p>
+            <p>In Queued: {{ in_queued_count }}</p>
+            <p>Rejected: {{ rejected_count }}</p>
+            <p>On Hold: {{ on_hold_count }}</p>
+            <p>Completed: {{ completed_count }}</p>
+            <p>Submitted: {{ submitted_count }}</p>
+        </div>
+    </div>
+
+</body>
+</html>

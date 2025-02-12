@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue History</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0062cc;">
+        <a class="navbar-brand" href="{{ url_for('get_issue') }}">Back to Issues</a>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>History for Issue #{{ issue.id }}</h2>
+        <p><strong>Problem:</strong> {{ issue.problem }}</p>
+        <p><strong>Email:</strong> {{ issue.email }}</p>
+
+        <h4>Status History:</h4>
+        <ul class="list-group">
+            {% for entry in history %}
+            <li class="list-group-item">
+                <strong>{{ entry.status }}</strong>
+                <span class="badge badge-secondary">{{ entry.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                <p>{{ entry.remarks }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

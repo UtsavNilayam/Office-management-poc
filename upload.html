@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body, html {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #e9ecef; /* Light gray background */
+            color: #333;
+        }
+
+        /* Top Navbar */
+        .navbar {
+            background-color: #0062cc;
+            padding: 0px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between; /* Space between logo and menu */
+            align-items: center;
+        }
+
+        .navbar .logo {
+          
+        }
+
+
+     
+
+        .navbar-nav {
+            display: flex;
+            justify-content: space-between; /* Space out the navbar items */
+            width: 80%; /* Limit the navbar width */
+            list-style-type: none;
+            padding: 0;
+            margin-right:60px
+        }
+
+        .navbar-nav .nav-item {
+            margin: 0 10px; /* Adjusted margin for uniform spacing */
+        }
+
+        .navbar-nav .nav-link {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none; /* Remove underline */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+            text-decoration: underline; /* Underline on hover */
+        }
+
+        /* Adjust padding to account for fixed navbar height */
+        body {
+            padding-top: 70px;
+        }
+
+        /* Header Section */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Align logo to the left */
+            padding: 10px 20px;
+            background: #0062cc; /* Sky Blue */
+            color: white;
+            font-size: 1.8em;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            border-radius: 5px; /* Slightly rounded edges */
+            width: 100%;
+        }
+
+        .header img {
+            width: 50px; /* Set width of logo */
+            height: auto;
+            margin-right: 15px; /* Adjust spacing between logo and title */
+        }
+
+        .header .title {
+            flex-grow: 1; /* Ensures the title takes up remaining space */
+            text-align: left;
+        }
+
+        /* Form Section */
+        .form-container {
+            max-width: 600px;
+            margin: 60px auto;
+            background-color: white; /* White background */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #ddd;
+        }
+
+        .form-container label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        .form-container input,
+        .form-container button {
+            width: 100%;
+            padding: 8px; /* Smaller padding for a formal look */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+            background-color: #fdf5e6;
+            margin-bottom: 15px;
+        }
+
+        .form-container button {
+            background-color: #87CEEB; /* Sky Blue */
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95em; /* Formal size */
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #6495ED; /* Deep Sky Blue */
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.8em;
+            color: black; /* Black color for the heading */
+            margin-bottom: 20px;
+        }
+
+        #preview-area {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center; /* Center align previews */
+        }
+
+        .preview-container {
+            position: relative;
+            display: inline-block;
+            width: 100px;
+        }
+
+        .preview-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .preview-container button {
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        .navbar {
+            background-color: #0062cc;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-nav {
+            display: flex;
+            justify-content: space-around; /* Make items spaced evenly */
+            width: 100%;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .navbar-nav .nav-item {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .navbar-nav .nav-link {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('filter_image') }}">Gallery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="/aregister">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('todays_birthday') }}">Birthday</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('get_issue') }}">Ticket</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="form-container">
+        <h1>Upload Images</h1>
+
+        <form action="/admin_upload" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div>
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div>
+                <label for="images">Select Images:</label>
+                <input type="file" id="images" name="images" multiple>
+            </div>
+
+            <div id="preview-area"></div>
+
+            <button type="submit" style="background-color:#0062cc;">Upload</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to preview selected images
+        document.getElementById('images').addEventListener('change', function(event) {
+            const previewArea = document.getElementById('preview-area');
+            previewArea.innerHTML = ''; // Clear previous previews
+
+            Array.from(event.target.files).forEach((file) => {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const previewContainer = document.createElement('div');
+                    previewContainer.classList.add('preview-container');
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.innerText = 'X';
+                    deleteButton.addEventListener('click', function() {
+                        previewContainer.remove();
+                    });
+
+                    previewContainer.appendChild(img);
+                    previewContainer.appendChild(deleteButton);
+                    previewArea.appendChild(previewContainer);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
+</body>
+</html>

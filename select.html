@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Images</title>
+    <style>
+        body, html {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #e9ecef; /* Light gray background */
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #0062cc;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between; /* Space between logo and menu */
+            align-items: center;
+            
+            height:40px;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar img {
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .navbar-nav .nav-item {
+            margin: 0 70px; /* Adjusted margin for uniform spacing */
+        }
+
+        .navbar-nav .nav-link {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            margin-right:120px;
+    
+                display: flex; /* Ensure flexbox layout */
+                justify-content: space-between; /* Space between items */
+            
+            
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+        }
+
+        /* Header Section */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Aligns logo to the left and title in the center */
+            width: 100%; /* Full width */
+            padding: 5px 5px;
+            background: #0062cc; /* Deep blue background */
+            color: white;
+            font-size: 1.8em;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .header img {
+            width: 50px; /* Set width of logo */
+            height: auto;
+        }
+
+        .header .title {
+            flex-grow: 1; /* Ensures the title takes up remaining space */
+            text-align: center;
+        }
+
+        /* Form Section */
+        .form-container {
+            max-width: 600px;
+            margin: 150px auto;
+            background-color: white; /* White background */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            text-align: center; /* Center align the form contents */
+        }
+
+        .form-container select,
+        .form-container button {
+            width: 80%; /* Reduced width for better alignment */
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+            background-color: #fdf5e6;
+            margin: 10px auto; /* Add spacing and center the elements */
+            display: block; /* Center align each element */
+        }
+
+        .form-container button {
+            background-color: #4682B4; /* Deep blue */
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #4169E1; /* Slightly brighter shade */
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #4682B4; /* Match the deep blue */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('get_issue') }}">Ticket</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('uploads') }}">Upload</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('todays_birthday') }}">Birthday</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('admin_register') }}">Register</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="header">
+        
+    </div>
+    &nbsp;
+    &nbsp;
+    ;
+    <!-- Filter Form Section -->
+    <div class="form-container"  >
+        
+     
+        <form action="/filter_image" method="POST" >
+            <div>
+                <select name="year" required>
+                    <option value="">Choose year</option>
+                    {% for year in distinct_years %}
+                    <option value="{{ year[0] }}">{{ year[0] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <select name="month" required>
+                    <option value="">Choose month</option>
+                    {% for month in distinct_months %}
+                    <option value="{{ month[0] }}">{{ month[0]|int|to_month_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" style="background-color:#0062cc;">Filter</button>
+        </form>
+    </div>
+
+    <!-- Back to Home Link -->
+    <div class="back-link">
+    </div>
+
+</body>
+</html>

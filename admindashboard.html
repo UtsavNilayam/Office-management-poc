@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin Dashboard</title>
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+            background-color: #f0f2f5;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #87CEEB;
+            color: white;
+            padding: 8px;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .dashboard-logo {
+            width: 50px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+            color: #333;
+            flex-grow: 1;
+            text-align: center;
+        }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0062cc;; /* Light Blue Background */
+            color: white;
+            padding: 8px;
+            border-bottom: 2px solid #ccc;
+            position: relative;
+        }
+
+        .dashboard-logo {
+            width: 50px;
+        }
+
+        .dashboard-header h1 {
+            font-size: 20px; /* Narrow the heading */
+            font-weight: bold;
+            margin: 0;
+            color: White; /* Dark color for title */
+            flex-grow: 1;
+            text-align: center; /* Center the title */
+        }
+
+        /* Account Dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .account-btn {
+           
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .account-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a, .dropdown-content form button {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border: none;
+            background-color: transparent;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .dropdown-content a:hover, .dropdown-content form button:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Dashboard Content */
+        .dashboard-content {
+            margin-top:40px;
+            padding: 20px;
+            color: #333;
+        }
+
+        .dashboard-content h2 {
+            margin-top: 30px;
+        }
+
+        /* Card Container */
+        .card-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex: 1;
+            min-width: 250px;
+            margin: 10px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+
+        .card-btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .card-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Toast Notification Styles */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            top: 30px;
+            right: 30px;
+            font-size: 17px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1; 
+        }
+
+        /* Profile Panel */
+        #profile {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: white;
+            width: 250px;
+            height: auto;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            display: none; /* Hidden by default */
+            z-index: 2;
+            padding: 10px;
+        }
+
+        #profile p {
+            margin: 10px 0;
+        }
+
+        .account-section {
+            width: 250px;
+            background-color: white;
+            position: absolute;
+            right: 10px;
+            top: 50px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 10px;
+            display: none;
+            z-index: 2;
+        }
+
+        .account-option {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .account-option:last-child {
+            border-bottom: none;
+        }
+
+        .account-option:hover {
+            background-color: #f1f1f1;
+        }
+
+        .profile-info {
+            padding: 10px;
+            display: none;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+        }
+
+        .account-btn {
+            background-color: transparent;
+            border:1px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .account-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-header">
+        <img src="/static/image.png" alt="Company Logo" class="dashboard-logo">
+        <h1>Welcome {{user.name}}!</h1>
+        <button class="account-btn" onclick="toggleAccountSection()">Account</button>
+    </div>
+
+    <div class="account-section" id="accountSection">
+        <div class="account-option" onclick="toggleProfile()">Profile</div>
+        <div class="profile-info" id="profileInfo">
+            <p><strong>Name:</strong> {{ user.name }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Birthday:</strong> {{ user.birthday }}</p>
+        </div>
+        <div class="account-option">
+            <a href="/admin_change_password">Change Password</a>
+        </div>
+        <div class="account-option">
+            <form method="POST" action="{{ url_for('logout2') }}">
+                <button type="submit" style="background: none; border: none; cursor: pointer; color: black;">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        
+        <div class="card-container">
+            <div class="card">
+                <h3>Manage Users</h3>
+                <p>View, edit, or delete users from the system.</p>
+                <a href="#" class="card-btn" style="text-decoration:none;">Manage</a>
+            </div>
+            <div class="card">
+                <h3>Today's Birthday</h3>
+                <p>See and wish them.</p>
+                <a href="/todays-birthday" class="card-btn" style="text-decoration:none;">Wish</a>
+            </div>
+            <div class="card">
+                <h3>Register New Admin</h3>
+                <p>Add a new admin to the system.</p>
+                <a href="/aregister" class="card-btn" style="text-decoration:none;">Register Admin</a>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card">
+                <h3>View Submitted Issues</h3>
+                <p>View and update the status of issues reported by users.</p>
+                <a href="/get_issue" class="card-btn" style="text-decoration:none;">View Issues</a>
+            </div>
+            <div class="card">
+                <h3>Upload Images</h3>
+                <p>Upload images to the gallery or other sections.</p>
+                <a href="/admin_upload_land" class="card-btn" style="text-decoration:none;">Upload Images</a>
+            </div>
+            <div class="card">
+                <h3>DG Gallery</h3>
+                <p>Manage images in the DG Gallery.</p>
+                <a href="/filter_image" class="card-btn" style="text-decoration:none;">View Gallery</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAccountSection() {
+            const accountSection = document.getElementById('accountSection');
+            accountSection.style.display = accountSection.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleProfile() {
+            const profileInfo = document.getElementById('profileInfo');
+            profileInfo.style.display = profileInfo.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Close the account section if clicked outside
+        document.addEventListener('click', function(event) {
+            const accountSection = document.getElementById('accountSection');
+            const accountButton = document.querySelector('.account-btn');
+            if (!accountSection.contains(event.target) && event.target !== accountButton) {
+                accountSection.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>

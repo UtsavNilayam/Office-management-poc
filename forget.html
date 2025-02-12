@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Forget</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ADD8E6; /* Light blue background */
+      display: flex; /* Use flexbox to center the box */
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      height: 100vh; /* Full height of the viewport */
+    }
+    .box {
+      background-color: #fff; /* White background for the box */
+      padding: 30px; /* Increased padding for more space */
+      border-radius: 8px; /* Rounded corners */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      width: 400px; /* Fixed width for the box */
+      max-width: 100%; /* Ensure responsiveness */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h2 class="text-center">Forget Password</h2>
+
+    <!-- Display flash messages if there are any -->
+    <div style="margin-bottom: 20px;">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <form action="/forget" method="POST">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="current_pwd">Current Password:</label>
+        <input type="password" class="form-control" id="current_pwd" placeholder="Enter current password" name="current_password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="new_pwd">New Password:</label>
+        <input type="password" class="form-control" id="new_pwd" placeholder="Enter new password" name="new_password" required>
+      </div>
+
+      <!-- Flash error message will be displayed here if any -->
+      {% if error %}
+        <div class="alert alert-danger">
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <button type="submit" class="btn btn-dark">Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>

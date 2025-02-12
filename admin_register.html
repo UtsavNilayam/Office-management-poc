@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Register</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        
+
+        .content {
+            margin-top: 60px; /* Space for the fixed navbar */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 450px; /* Increased width for a wider form */
+            max-width: 100%;
+        }
+
+        .box h2 {
+            text-align: center;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .form-footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        /* Top Navbar */
+        .navbar {
+            background-color: #0062cc;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-nav {
+            display: flex;
+            justify-content: space-around; /* Make items spaced evenly */
+            width: 100%;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .navbar-nav .nav-item {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .navbar-nav .nav-link {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Skyblue Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('filter_image') }}">Gallery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('uploads') }}">Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('todays_birthday') }}">Birthday</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('get_issue') }}">Ticket</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+
+    <!-- Content for the Registration Form -->
+    <div class="content">
+        <div class="box">
+            
+
+            <!-- Admin Registration Form -->
+            <form action="/aregister" method="POST">
+                <h3>Admin Registration</h3>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                </div>
+                
+                <!-- Date of Birth Field -->
+                <div class="form-group">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" class="form-control" id="dob" name="dob" required>
+                </div>
+
+                <!-- Display error message if registration fails -->
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-dark btn-block">Register</button>
+            </form>
+
+            <!-- Back to Login Link -->
+         
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Birthdays</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar Style */
+        .navbar {
+            background-color: #0062cc;
+            padding: 0px 5px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar img {
+            width: 50px;
+        }
+
+        .navbar .navbar-title {
+            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .content {
+            margin-top: 80px; /* Space for the fixed navbar */
+            padding: 20px;
+        }
+
+        /* Card Style */
+        .birthday-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .birthday-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .birthday-card h3 {
+            margin: 5px 0;
+        }
+
+        .birthday-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .birthday-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .birthday-list .birthday-card {
+            flex: 0 1 calc(25% - 20px); /* 4 cards per row with spacing */
+        }
+
+        .wish-all-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        /* Spinner Styles */
+        #loading-spinner {
+            display: none;
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin: 0 auto;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Top Navbar */
+        .navbar {
+            background-color: #0062cc;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-nav {
+            display: flex;
+            justify-content: space-around; /* Make items spaced evenly */
+            width: 100%;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .navbar-nav .nav-item {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .navbar-nav .nav-link {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #f8f9fa;
+        }
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            margin-left:-15px;
+            margin-top:-8px;
+
+
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+           
+
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('filter_image') }}">Gallery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('uploads') }}">Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('get_issue') }}">Ticket</a>
+                </li>
+                <li class="nav-item">
+                    <a class="text-white font-weight-bold" href="{{ url_for('admin_register') }}">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Skyblue Navbar -->
+   
+
+    <!-- Content Section -->
+    <div class="content">
+        <!-- Wish All Button with Loading Spinner -->
+        <div class="wish-all-container">
+            <form action="{{ url_for('send_birthday_emails') }}" method="POST" id="wishAllForm">
+                <button type="submit" class="btn btn-success" id="wishButton">Wish All</button>
+            </form>
+            <div id="loading-spinner"></div> <!-- Spinner -->
+        </div>
+
+        <!-- Birthday Cards -->
+        <div class="birthday-list">
+            {% if users %}
+                {% for user in users %}
+                    <div class="birthday-card">
+                        <img src="{{ user.image_url or '/static/face.png' }}" alt="{{ user.name }}">
+                        <h3>{{ user.name }}</h3>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>DOB:</strong> {{ user.birthday }}</p>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No birthdays today.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Show loading spinner when the form is submitted
+        document.getElementById('wishAllForm').onsubmit = function() {
+            document.getElementById('loading-spinner').style.display = 'block';
+            document.getElementById('wishButton').disabled = true;
+        };
+    </script>
+
+</body>
+</html>
